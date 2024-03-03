@@ -1,8 +1,6 @@
-from preprocessing.datasets_loaders import Kodera_29, Averta_156
+from preprocessing import ETL
+from vizualization.Raw_data_vizualization import plot_data_of_subject, plot_data_of_all_subject
 
 if __name__ == '__main__':
-    # pom = Averta_156.Averta()
-
-    pom = Kodera_29.Kodera()
-    files_per_subject = pom.load_data()
-    print()
+    data, labels = ETL.load_data()
+    plot_data_of_all_subject(data, labels)
