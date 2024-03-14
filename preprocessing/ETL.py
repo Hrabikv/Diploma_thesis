@@ -8,6 +8,7 @@ import mne
 import numpy as np
 from mne import Epochs
 from mne.time_frequency import EpochsTFR
+from vizualization.Raw_data_vizualization import plot_data_of_all_subject, plot_data_of_subject
 
 
 def load_data() -> tuple[np.ndarray, np.ndarray]:
@@ -28,6 +29,7 @@ def load_data() -> tuple[np.ndarray, np.ndarray]:
         d, l = dataset.preprocess_data(sampling_frequency=sampling_frequency)
         data.append(d)
         labels.append(l)
+        # plot_data_of_all_subject(d, l)
 
     data = np.concatenate(data)
     labels = np.concatenate(labels)
