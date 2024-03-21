@@ -16,18 +16,18 @@ def _concatenate_data(data):
 
 
 def apply_TSNE(data):
-    X = _concatenate_data(data)
+    # X = _concatenate_data(data)
 
-    tsne = TSNE(n_components=2, learning_rate='auto', init='random', perplexity=3)
+    tsne = TSNE(n_components=2, learning_rate='auto', init='random', perplexity=2)
 
-    X_embedded = tsne.fit_transform(X)
+    X_embedded = tsne.fit_transform(data)
     return X_embedded
 
 
 def apply_CSP(data, labels):
     # X = _concatenate_data(data)
 
-    csp = CSP(n_components=4, reg=None, log=True, norm_trace=False)
+    csp = CSP(n_components=3, reg=None, log=True, norm_trace=False)
 
     X_embedded = csp.fit_transform(data, labels)
     return X_embedded
