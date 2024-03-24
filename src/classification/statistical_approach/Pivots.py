@@ -1,6 +1,9 @@
+import warnings
 from abc import abstractmethod, ABC
 
 import numpy as np
+
+warnings.filterwarnings("error")
 
 
 def create_pivots():
@@ -28,7 +31,13 @@ class Mean(Pivot):
         self.name = "Mean"
 
     def compute(self, data):
-        x = np.mean(data, axis=0)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            x = np.mean(data, axis=0)
+        # try:
+        #     x = np.mean(data, axis=0)
+        # except RuntimeWarning:
+        #     breakpoint()
         self.value = x / np.linalg.norm(x)
         return self.value
 
@@ -45,7 +54,9 @@ class Median(Pivot):
         self.name = "Media"
 
     def compute(self, data):
-        x = np.median(data, axis=0)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=RuntimeWarning)
+            x = np.median(data, axis=0)
         self.value = x / np.linalg.norm(x)
         return self.value
 

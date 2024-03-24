@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 import mne
 from mne.io import Raw
 
-from enums.MovementType import MovementType
+from src.enums.MovementType import MovementType
 
 
 class FileFormat(ABC):

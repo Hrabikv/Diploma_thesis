@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class Extraction:
+class Extraction(ABC):
     data_path = "data/"
 
     @abstractmethod

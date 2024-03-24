@@ -1,10 +1,10 @@
 from .Extraction import Extraction
-from utils.Constants import EPOCH_DROP_HALF_RESTING, EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
+from src.utils.Constants import EPOCH_DROP_HALF_RESTING, EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
 from .data_formats.Saleh_format import SalehFormat
 from .data_formats.Mochura_format import MochaFormat
 from .data_formats.File_format import FileFormat
-from enums.MovementType import MovementType
-from enums.EpochEvent import EpochEvent
+from src.enums.MovementType import MovementType
+from src.enums.EpochEvent import EpochEvent
 
 import random
 import logging as log

@@ -1,9 +1,8 @@
 import numpy as np
 
 from .Pivots import create_pivots
-from .Metrics import EuclideanDistance, MahalanobisDistance
+from .Metrics import EuclideanDistance
 from .Representative import Representative
-from vizualization.Raw_data_vizualization import plot_data_sample, plot_data_of_all_subject
 
 metrics = [EuclideanDistance()]
 l = ["rest", "left", "right"]

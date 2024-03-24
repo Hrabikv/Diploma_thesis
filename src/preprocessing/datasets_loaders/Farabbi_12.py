@@ -1,14 +1,10 @@
 from .Extraction import Extraction
-from utils.Constants import EPOCH_DROP_HALF_RESTING, EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
-from .data_formats.File_format import FileFormat
-from enums.MovementType import MovementType
+from src.utils.Constants import EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
+from src.enums.MovementType import MovementType
 
-
-import warnings
 import numpy as np
 import os
 import mne
-from mne.io import Raw
 from mne import Epochs
 
 

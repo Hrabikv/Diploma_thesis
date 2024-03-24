@@ -1,5 +1,6 @@
-from classification.Classifier import Classifier
-from classification.statistical_approach.Statistic import StatisticalClassification
+from src.classification.Classifier import Classifier
+from src.classification.statistical_approach.Statistic import StatisticalClassification
+from timeit import default_timer as timer
 
 l = {"rest": 2, "left": 5, "right": 6}
 
@@ -10,15 +11,23 @@ class StatisticClassification(Classifier):
         self.classifier = None
         self.name = "StatisticClassification"
 
-    def train(self, data, labels):
+    def train(self, data, labels) -> float:
+        start = timer()
         classifier = StatisticalClassification(data=data, labels=labels)
         classifier.compute_class_representative()
         classifier.compute_pivots_value_of_representations()
         classifier.chose_best_pivots_globally()
+        end = timer()
+        time_of_training = end - start
 
         self.classifier = classifier
+        return time_of_training
 
-    def validate(self, data, labels) -> float:
+    def validate(self, data, labels) -> [float, float]:
+        start = timer()
+        self.classifier.classify(data[0])
+        end = timer()
+        time_of_classification = end - start
         result_labels = []
         for sample in data:
             result = self.classifier.classify(sample)
@@ -29,7 +38,10 @@ class StatisticClassification(Classifier):
             if sample == result:
                 correctly.append(sample)
 
-        acc = (len(correctly)/len(labels))*100
-        print(acc)
+        if len(labels) == 0:
+            return 0, -1
 
-        return acc
+        acc = (len(correctly)/len(labels))*100
+        print("Accuracy: {0}".format(acc))
+
+        return acc, time_of_classification
