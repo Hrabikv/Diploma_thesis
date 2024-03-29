@@ -1,6 +1,7 @@
 import numpy as np
 from .Classifier import Classifier
 from src.vizualization.Results_vizualization import plot_raw_results
+from src.utils.Constants import NUMBER_OF_CLASSES
 import csv
 import os
 
@@ -16,7 +17,7 @@ def reshape_data(data):
     for sample in data:
         x = np.array(sample).reshape(3, int(len(sample)/3))
         new_data.append(x)
-    return new_data
+    return np.array(new_data)
 
 
 def concatenate(data):
@@ -28,10 +29,9 @@ def concatenate(data):
 
 
 def split_data_to_classes(data, labels):
-    number_of_classes = 3
     new_data = []
     new_labels = []
-    for classes in range(number_of_classes):
+    for classes in range(NUMBER_OF_CLASSES):
         new_data.append([])
         new_labels.append([])
 
@@ -46,6 +46,12 @@ def split_data_to_classes(data, labels):
         elif label == 6:
             new_data[2].append(sample)
             new_labels[2].append(label)
+        elif label == 20:
+            new_data[0].append(sample)
+            new_labels[0].append(label)
+        elif label == 30:
+            new_data[1].append(sample)
+            new_labels[1].append(label)
 
     return new_data, new_labels
 
@@ -98,9 +104,14 @@ def create_train_test(data, step, i):
     return np.concatenate([first_part, last_part]), middle_part
 
 
-def compute_results(classifier, vectors, labels, step, i):
-    train_vectors, test_vectors = create_train_test(vectors, step, i)
-    train_labels, test_labels = create_train_test(labels, step, i)
+def compute_results(classifier, vectors, labels, step, i, is_sorted):
+    if is_sorted:
+        train_vectors, test_vectors = create_train_test_sorted(vectors, step, i)
+        train_labels, test_labels = create_train_test_sorted(labels, step, i)
+    else:
+        train_vectors, test_vectors = create_train_test(vectors, step, i)
+        train_labels, test_labels = create_train_test(labels, step, i)
+
     if len(test_vectors) < 3:
         return None
     time_of_training = classifier.train(train_vectors, train_labels)
@@ -124,11 +135,11 @@ def cross_validation(vectors, labels, classifiers: [Classifier], subject):
         for step in steps:
             fold = (int(len(vectors) * step / 100))
             for i in range(int(len(vectors) / fold)):
-                unsorted_results = compute_results(classifier, vectors, labels, step, i)
+                unsorted_results = compute_results(classifier, vectors, labels, step, i, False)
                 if unsorted_results is None:
                     continue
                 results.append(unsorted_results)
-                sorted_results = compute_results(classifier, vectors, labels, step, i)
+                sorted_results = compute_results(classifier, new_vectors, new_labels, step, i, True)
                 if sorted_results is None:
                     continue
                 results_sorted.append(sorted_results)
@@ -144,6 +155,13 @@ def save_results(values_for_print, classificator, subject):
     if not os.path.isdir(path):
         os.mkdir(path)
     path = path + "/subject_{0}".format(subject)
+    if not os.path.isdir(path):
+        os.mkdir(path)
+
+    if NUMBER_OF_CLASSES == 2:
+        path = path + "/binary"
+    elif NUMBER_OF_CLASSES == 3:
+        path = path + "/multi_class"
     if not os.path.isdir(path):
         os.mkdir(path)
 

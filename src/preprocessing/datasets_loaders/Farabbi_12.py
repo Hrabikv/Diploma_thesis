@@ -1,6 +1,7 @@
 from .Extraction import Extraction
-from src.utils.Constants import EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
+from src.utils.Constants import EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD, NUMBER_OF_CLASSES
 from src.enums.MovementType import MovementType
+
 
 import numpy as np
 import os

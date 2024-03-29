@@ -14,27 +14,21 @@ class CNN(Classifier):
 
     def train(self, data, labels) -> float:
         y_train = convert_labels_to_OneHot(labels)
-        # length = len(data[0])
-        # step = int(length/3)
-        # sample = np.array(data[0])
-        #
-        # data_shape = np.array([sample[:step], sample[step:step*2], sample[step*2:]])
         data = reshape_data(data)
         self.model = create_CNN_model(data[0].shape, np.array(y_train[0]).shape)
-        callback = EarlyStopping(monitor='loss', patience=3)
+        callback = EarlyStopping(monitor='loss', patience=1)
         start = timer()
         self.model.fit(np.array(data), y_train, epochs=50, shuffle=True, verbose=0, callbacks=[callback])
         end = timer()
         time_of_training = end - start
-        # plot_history_of_MLP(history, self.model.metrics_names[1])
         return time_of_training
 
     def validate(self, data, labels) -> [float, float]:
         y_train = convert_labels_to_OneHot(labels)
         data = reshape_data(data)
-        scores = self.model.evaluate(np.array(data), y_train)
+        scores = self.model.evaluate(np.array(data), y_train, verbose=0)
         start = timer()
-        self.model.evaluate(np.array([data[0]]), np.array([y_train[0]]))
+        self.model.evaluate(np.array([data[0]]), np.array([y_train[0]]), verbose=1)
         end = timer()
         time_of_classification = end - start
 

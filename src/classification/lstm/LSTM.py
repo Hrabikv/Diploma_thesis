@@ -1,28 +1,31 @@
-import numpy as np
-from src.classification.Classifier import Classifier, convert_labels_to_OneHot
-from .MLP_model import create_MLP_model
+from ..Classifier import Classifier, convert_labels_to_OneHot
+from .LSTM_model import create_LSTM_model
 from timeit import default_timer as timer
 from keras.callbacks import EarlyStopping
+import numpy as np
+from ..Cross_Validation import reshape_data
 
 
-class MLP(Classifier):
+class LSTM(Classifier):
 
     def __init__(self):
         self.model = None
-        self.name = "MLP"
+        self.name = "LSTM"
 
     def train(self, data, labels) -> float:
         y_train = convert_labels_to_OneHot(labels)
-        self.model = create_MLP_model(data[0].shape, y_train[0].shape)
-        callback = EarlyStopping(monitor='loss', patience=1)
+        data = np.reshape(data, (len(data), 1, len(data[0])))
+        self.model = create_LSTM_model(np.array(data[0]).shape, y_train[0].shape)
+        callback = EarlyStopping(monitor='loss', patience=1, min_delta=0.01)
         start = timer()
-        self.model.fit(np.array(data), y_train, epochs=50, shuffle=True, verbose=0, callbacks=[callback])
+        self.model.fit(np.array(data), y_train, epochs=50, shuffle=True, verbose=2, callbacks=[callback])
         end = timer()
         time_of_training = end - start
         return time_of_training
 
     def validate(self, data, labels) -> [float, float]:
         y_train = convert_labels_to_OneHot(labels)
+        data = np.reshape(data, (len(data), 1, len(data[0])))
         scores = self.model.evaluate(np.array(data), y_train, verbose=0)
         start = timer()
         self.model.evaluate(np.array([data[0]]), np.array([y_train[0]]), verbose=0)

@@ -2,7 +2,7 @@ from src.classification.Classifier import Classifier
 from src.classification.statistical_approach.Statistic import StatisticalClassification
 from timeit import default_timer as timer
 
-l = {"rest": 2, "left": 5, "right": 6}
+l = {"rest": 2, "left": 5, "right": 6, "no_movement": 20, "movement": 30}
 
 
 class StatisticClassification(Classifier):
@@ -16,7 +16,6 @@ class StatisticClassification(Classifier):
         classifier = StatisticalClassification(data=data, labels=labels)
         classifier.compute_class_representative()
         classifier.compute_pivots_value_of_representations()
-        classifier.chose_best_pivots_globally()
         end = timer()
         time_of_training = end - start
 

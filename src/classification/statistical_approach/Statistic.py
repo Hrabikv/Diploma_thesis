@@ -3,9 +3,11 @@ import numpy as np
 from .Pivots import create_pivots
 from .Metrics import EuclideanDistance
 from .Representative import Representative
+from src.utils.Constants import NUMBER_OF_CLASSES
 
 metrics = [EuclideanDistance()]
-l = ["rest", "left", "right"]
+l3 = ["rest", "left", "right"]
+l2 = ["no_movement", "movement"]
 
 
 class StatisticalClassification:
@@ -16,9 +18,15 @@ class StatisticalClassification:
         self.class_data = None
         self.pom1 = None
         self.pom2 = None
+        self.labels = None
+        self.labels_names = None
+        if NUMBER_OF_CLASSES == 2:
+            self.labels = l2
+        elif NUMBER_OF_CLASSES == 3:
+            self.labels = l3
         self._create_class_dependent_data(data=data, labels=labels)
 
-    def _create_class_dependent_data(self, number_of_classes=3, data=None, labels=None):
+    def _create_class_dependent_data(self, number_of_classes=NUMBER_OF_CLASSES, data=None, labels=None):
         self.pom1 = np.array(labels)
         self.pom2 = []
         new_data = []
@@ -28,18 +36,24 @@ class StatisticalClassification:
         for sample, label in zip(data, labels):
 
             self.pom2.append(np.array([sample[:1000], sample[1000:2000], sample[2000:]]))
-            if label == 2:
-                new_data[0].append(sample)
-            elif label == 5:
-                new_data[1].append(sample)
-            elif label == 6:
-                new_data[2].append(sample)
+            if NUMBER_OF_CLASSES == 2:
+                if label == 20:
+                    new_data[0].append(sample)
+                elif label == 30:
+                    new_data[1].append(sample)
+            elif NUMBER_OF_CLASSES == 3:
+                if label == 2:
+                    new_data[0].append(sample)
+                elif label == 5:
+                    new_data[1].append(sample)
+                elif label == 6:
+                    new_data[2].append(sample)
 
         self.class_data = new_data
 
     def compute_class_representative(self):
         class_pivots = []
-        for data, label in zip(self.class_data, l):
+        for data, label in zip(self.class_data, self.labels):
             representatives = []
             pivots = create_pivots()
             for pivot in pivots:
@@ -56,7 +70,7 @@ class StatisticalClassification:
 
     def compute_pivots_value_of_representations(self):
         results = []
-        for pivot, label, data in zip(self.pivots, l, self.class_data):
+        for pivot, label, data in zip(self.pivots, self.labels, self.class_data):
             for p in pivot:
                 for metric in metrics:
                     distance = 0
@@ -64,7 +78,10 @@ class StatisticalClassification:
                         distance = distance + metric.compute_distance(p.value, sample)
                     results.append(Representative(value=distance, metric=metric, pivot=p, label=label))
         self.results = results
-        self.chose_best_pivots_globally()
+        if NUMBER_OF_CLASSES == 2:
+            self.chose_best_pivots_globally_binary()
+        elif NUMBER_OF_CLASSES == 3:
+            self.chose_best_pivots_globally_multiclass()
 
         # self.pom1 = np.concatenate([self.pom1, [1, 4, 7]])
         # for rep in self.results:
@@ -72,7 +89,20 @@ class StatisticalClassification:
 
         # plot_data_of_all_subject(np.array(self.pom2), self.pom1, "00")
 
-    def chose_best_pivots_globally(self):
+    def chose_best_pivots_globally_binary(self):
+        best_movement = Representative(value=1000, metric=None, pivot=None, label=None)
+        best_no_movement = Representative(value=1000, metric=None, pivot=None, label=None)
+        for result in self.results:
+            if result.get_label() == "no_movement":
+                if result.get_value() < best_no_movement.get_value():
+                    best_no_movement = result
+            elif result.get_label() == "movement":
+                if result.get_value() < best_movement.get_value():
+                    best_movement = result
+
+        self.results = [best_movement, best_no_movement]
+
+    def chose_best_pivots_globally_multiclass(self):
         best_rest = Representative(value=1000, metric=None, pivot=None, label=None)
         best_left = Representative(value=1000, metric=None, pivot=None, label=None)
         best_right = Representative(value=1000, metric=None, pivot=None, label=None)

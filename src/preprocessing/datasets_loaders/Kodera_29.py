@@ -1,5 +1,5 @@
 from .Extraction import Extraction
-from src.utils.Constants import EPOCH_DROP_HALF_RESTING, EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
+from src.utils.Constants import EPOCH_DROP_HALF_RESTING, EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD, NUMBER_OF_CLASSES
 from .data_formats.Saleh_format import SalehFormat
 from .data_formats.Mochura_format import MochaFormat
 from .data_formats.File_format import FileFormat
@@ -63,7 +63,7 @@ class Kodera(Extraction):
 
         for i, subject_files in enumerate(self.files_per_subject):
             log.info(f"Gathering data for subject {i + 1}.")
-            if classification_type == 1:
+            if NUMBER_OF_CLASSES == 3:
                 left = [left for left in subject_files if left.movement_type is MovementType.LEFT]
                 right = [right for right in subject_files if right.movement_type is MovementType.RIGHT]
 
@@ -89,18 +89,16 @@ class Kodera(Extraction):
                 data.append(np.concatenate((left_data, right_data)))
                 labels.append(np.concatenate((left_labels, right_labels)))
 
-            # elif classification_type == 0:
-            #     epochs, epochs_labels = _get_epochs(subject_files, EpochEvent.MOVEMENT_START, sampling_frequency)
-            #
-            #     if epochs is None:
-            #         continue
-            #
-            #     subject_epochs.append(epochs)
-            #
-            #     epochs_data = epochs.get_data()
-            #
-            #     data.append(epochs_data)
-            #     labels.append(epochs_labels)
+            elif NUMBER_OF_CLASSES == 2:
+                epochs, epochs_labels = self.get_epochs(subject_files, EpochEvent.MOVEMENT_START, sampling_frequency)
+
+                if epochs is None:
+                    continue
+
+                epochs_data = epochs.get_data()
+
+                data.append(epochs_data)
+                labels.append(epochs_labels)
 
         data = np.array(data, dtype=object)
         labels = np.array(labels, dtype=object)
