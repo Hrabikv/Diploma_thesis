@@ -51,7 +51,7 @@ def transform_to_binary(labels):
             if event == 5 or event == 6:
                 new_subject_labels.append(30)
         new_labels.append(np.array(new_subject_labels))
-    return np.array(new_labels)
+    return np.array(new_labels, dtype=object)
 
 
 def epochs_to_time_frequency(epochs: Epochs) -> EpochsTFR:

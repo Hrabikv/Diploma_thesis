@@ -1,11 +1,11 @@
 import numpy as np
 
 from .Pivots import create_pivots
-from .Metrics import EuclideanDistance
+from .Metrics import EuclideanDistance, MahalanobisDistance, CosineDistance, HammingDistance
 from .Representative import Representative
 from src.utils.Constants import NUMBER_OF_CLASSES
 
-metrics = [EuclideanDistance()]
+metrics = [EuclideanDistance(), CosineDistance(), HammingDistance()]
 l3 = ["rest", "left", "right"]
 l2 = ["no_movement", "movement"]
 

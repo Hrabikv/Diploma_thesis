@@ -30,9 +30,34 @@ class MahalanobisDistance(Metric):
         self.name = "MahalanobisDistance"
 
     def compute_distance(self, pivot, sample):
-        cov = np.cov(pivot, sample)
+        cov = np.corrcoef(pivot, sample)
         icov = np.linalg.inv(cov)
         return distance.mahalanobis(pivot, sample, icov)
 
     def print_name(self):
         return self.name
+
+
+class CosineDistance(Metric):
+
+    def __init__(self):
+        self.name = "CosineDistance"
+
+    def compute_distance(self, pivot, sample):
+        return distance.cosine(pivot, sample)
+    
+    def print_name(self):
+        return self.name
+
+
+class HammingDistance(Metric):
+
+    def __init__(self):
+        self.name = "HammingDistance"
+
+    def compute_distance(self, pivot, sample):
+        return distance.hamming(pivot, sample)
+
+    def print_name(self):
+        return self.name
+

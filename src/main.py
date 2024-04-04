@@ -1,12 +1,13 @@
 from preprocessing import ETL
 from classification.Cross_Validation import cross_validation
+import numpy as np
+import keras.layers as layers
+import keras
 from classification.statistical_approach.Statistic_classification import StatisticClassification
 from classification.cnn.CNN import CNN
 from classification.mlp.MLP import MLP
 from classification.lstm.LSTM import LSTM
-
-# binary LSTM subject 21 done
-# binary CNN, MLP subject 35 done
+from classification.transformer.Transformer import Transformer
 
 
 def tests_all_subjects(data, labels, classifiers):
@@ -18,7 +19,8 @@ def tests_all_subjects(data, labels, classifiers):
 
 if __name__ == '__main__':
     d, l = ETL.load_data()
-    classifiers_array = [StatisticClassification(), MLP(), CNN()]
+    classifiers_array = [Transformer()]
     # cross_validation(vectors=d[8], labels=l[8], classifiers=classifiers_array, subject="9")
     tests_all_subjects(d, l, classifiers_array)
     print()
+
