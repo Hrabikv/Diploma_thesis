@@ -1,10 +1,6 @@
-import numpy as np
 import tensorflow as tf
-from keras.layers import Reshape, Input, Dense, BatchNormalization
-from keras.models import Model
+from keras.layers import Dense, BatchNormalization
 from keras import Sequential
-from keras.metrics import Accuracy, CategoricalAccuracy, SparseCategoricalAccuracy
-from keras.layers.activation import LeakyReLU
 
 
 def create_MLP_model(input_size, output_size):

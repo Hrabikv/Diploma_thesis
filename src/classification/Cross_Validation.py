@@ -1,7 +1,7 @@
 import numpy as np
 from .Classifier import Classifier
 from src.vizualization.Results_vizualization import plot_raw_results
-from src.utils.Constants import NUMBER_OF_CLASSES
+from ..config import NUMBER_OF_CLASSES
 import csv
 import os
 

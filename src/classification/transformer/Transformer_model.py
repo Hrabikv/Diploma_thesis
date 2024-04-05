@@ -1,6 +1,6 @@
 import keras.layers as layers
 import keras
-from src.utils.Constants import NUMBER_OF_CLASSES
+from src.config import NUMBER_OF_CLASSES
 
 
 def transformer_encoder(inputs, head_size, num_heads, ff_dim, dropout=0):
@@ -45,8 +45,8 @@ def create_Transformer_model(
 
     model.compile(
         loss="categorical_crossentropy",
-        optimizer=keras.optimizers.Adam(learning_rate=1e-4),
+        optimizer=keras.optimizers.Adam(learning_rate=1e-5),
         metrics=["accuracy"],
     )
-    model.summary()
+    # model.summary()
     return model

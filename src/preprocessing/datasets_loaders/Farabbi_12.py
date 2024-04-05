@@ -1,5 +1,5 @@
 from .Extraction import Extraction
-from src.utils.Constants import EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD, NUMBER_OF_CLASSES
+from src.utils.Constants import EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
 from src.enums.MovementType import MovementType
 
 

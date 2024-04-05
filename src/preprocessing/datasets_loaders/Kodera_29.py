@@ -1,5 +1,6 @@
 from .Extraction import Extraction
-from src.utils.Constants import EPOCH_DROP_HALF_RESTING, EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD, NUMBER_OF_CLASSES
+from src.utils.Constants import EPOCH_DROP_HALF_RESTING, EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
+from ...config import NUMBER_OF_CLASSES
 from .data_formats.Saleh_format import SalehFormat
 from .data_formats.Mochura_format import MochaFormat
 from .data_formats.File_format import FileFormat

@@ -1,9 +1,7 @@
 import tensorflow as tf
-from keras.layers import Reshape, Input, Dense, BatchNormalization, Conv1D, GlobalAveragePooling1D
 from keras.models import Model
 import keras.layers as kl
 from keras import Sequential
-import numpy as np
 
 
 def create_CNN_model(input_shape, output_shape):

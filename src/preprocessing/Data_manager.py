@@ -1,7 +1,7 @@
 import numpy as np
 import os
 
-from src.utils.Constants import NUMBER_OF_CLASSES
+from src.config import NUMBER_OF_CLASSES
 
 DATA_FOLDER = "PREPROCESSED_DATA_FOLDER"
 

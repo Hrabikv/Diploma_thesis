@@ -1,7 +1,7 @@
 from .datasets_loaders.Kodera_29 import Kodera
 from .datasets_loaders.Farabbi_12 import Farabbi
-from src.utils.Data_manager import save_preprocessed_data, load_preprocessed_data
-from src.utils.Constants import NUMBER_OF_CLASSES
+from src.preprocessing.Data_manager import save_preprocessed_data, load_preprocessed_data
+from ..config import NUMBER_OF_CLASSES
 
 import sys
 import mne

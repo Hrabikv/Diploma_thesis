@@ -1,11 +1,7 @@
-import plotly.express as px
-import os
 import numpy as np
-import scipy as sc
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 from mne.decoding import CSP
-from scipy.stats import lognorm
 
 
 def _concatenate_data(data):
@@ -40,7 +36,3 @@ def apply_PCA(data):
 
     X_embedded = pca.fit_transform(X)
     return X_embedded
-
-
-def apply_Lognorm():
-    print()
