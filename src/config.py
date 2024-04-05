@@ -1,5 +1,5 @@
 NUMBER_OF_CLASSES = 3  # 2 - binary classification, 3 - multiclass classification
-TRAINING_INFO = 0  # 0 = silent, 1 = progress bar, 2 = one line per epoch
+TRAINING_INFO = 1  # 0 = silent, 1 = progress bar, 2 = one line per epoch
 TESTING_INFO = 0  # 0 = silent, 1 = progress bar, 2 = one line per epoch
 CLASSIFIERS = ["Transformer"]  # array of classifiers that will be used.
 # Implemented classifiers are: "Statistic", "MLP", "CNN", "LSTM", "Transformer"
