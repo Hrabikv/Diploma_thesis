@@ -30,14 +30,16 @@ def plot_results(data_per_class, path):
     time_of_classification = []
     time_of_training = []
     classifiers = []
-    for clas in data_per_class:
+    for i, clas in enumerate(data_per_class):
         values = data_per_class[clas]["values"]
-        classifiers.append(clas)
+        if i % 2 == 0:
+            classifiers.append(clas + "\n")
+        else:
+            classifiers.append(clas)
         average_accuracy.append(values[0])
         best_accuracy.append(values[1])
         time_of_classification.append(values[2])
         time_of_training.append(values[3])
-    print()
     plot_average_accuracy(average_accuracy, classifiers, path + "/Average_accuracy.png")
     plot_best_accuracy(best_accuracy, classifiers, path + "/Best_accuracy.png")
     plot_time_of_classification(time_of_classification, classifiers, path + "/Time_of_classification.png")

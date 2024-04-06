@@ -33,7 +33,7 @@ class Transformer(Classifier):
         )
         callback = EarlyStopping(monitor='loss', patience=5, restore_best_weights=True)
         start = timer()
-        self.model.fit(x_train, y_train, epochs=50, shuffle=True, verbose=TRAINING_INFO, callbacks=[callback], batch_size=10)
+        self.model.fit(x_train, y_train, epochs=100, shuffle=True, verbose=TRAINING_INFO, callbacks=[callback], batch_size=10)
         end = timer()
         time_of_training = end - start
         return time_of_training

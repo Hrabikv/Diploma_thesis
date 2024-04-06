@@ -19,7 +19,20 @@ def compute_final_results():
             class_results = {}
             for classifier in t:
                 clas = t[classifier]
-                values = [np.mean(clas["accuracy"]), np.max(clas["accuracy"]), np.mean(clas["time_of_classification"]), np.mean(clas["time_of_training"])]
+                acc = 0
+                i = 0
+                for f in clas["fold"]:
+                    if f == 10:
+                        acc += clas["accuracy"][i]
+                        i += 1
+                values = []
+                if i != 0:
+                    values.append(acc / i)
+                else:
+                    values.append(0)
+                values.append(np.max(clas["accuracy"]))
+                values.append(np.mean(clas["time_of_classification"]))
+                values.append(np.mean(clas["time_of_training"]))
                 tmp_results = {"names": names,
                                "values": values}
                 class_results[classifier] = tmp_results
@@ -53,4 +66,3 @@ def create_final_results():
             t = sub[typ]
             save_results(t, type_path + "/results.csv")
             plot_results(t, type_path)
-    print()
