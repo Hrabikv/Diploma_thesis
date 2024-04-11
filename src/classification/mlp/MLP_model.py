@@ -10,9 +10,9 @@ def create_MLP_model(input_size, output_size):
 
     model.add(Dense(input_size[0], activation=tf.nn.relu, kernel_initializer=initializer))
     model.add(BatchNormalization(momentum=0.8))
-    model.add(Dense(1500, activation=tf.nn.relu, kernel_initializer=initializer))
+    model.add(Dense(int(input_size[0]*2/3), activation=tf.nn.relu, kernel_initializer=initializer))
     model.add(BatchNormalization(momentum=0.8))
-    model.add(Dense(250, activation=tf.nn.relu, kernel_initializer=initializer))
+    model.add(Dense(int(input_size[0]/5), activation=tf.nn.relu, kernel_initializer=initializer))
     model.add(BatchNormalization(momentum=0.8))
     model.add(Dense(output_size[0], activation='softmax', kernel_initializer=initializer))
 

@@ -19,7 +19,7 @@ class CNN(Classifier):
         self.model = create_CNN_model(data[0].shape, np.array(y_train[0]).shape)
         callback = EarlyStopping(monitor='loss', patience=1)
         start = timer()
-        self.model.fit(np.array(data), y_train, epochs=50, shuffle=True, verbose=TRAINING_INFO, callbacks=[callback])
+        self.model.fit(np.array(data), y_train, epochs=50, shuffle=True, verbose=TRAINING_INFO, callbacks=[callback], batch_size=10)
         end = timer()
         time_of_training = end - start
         return time_of_training

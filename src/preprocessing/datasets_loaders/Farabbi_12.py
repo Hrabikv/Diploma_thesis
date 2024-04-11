@@ -1,4 +1,4 @@
-from .Extraction import Extraction
+from .Extraction import Extraction, transform_data_representation
 from src.utils.Constants import EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
 from src.enums.MovementType import MovementType
 
@@ -61,7 +61,7 @@ class Farabbi(Extraction):
             if epochs is None or epoch_labels is None:
                 continue
 
-            data.append(epochs.get_data())
+            data.append(transform_data_representation(epochs))
             labels.append(epoch_labels)
 
         data = np.array(data, dtype=object)
@@ -104,22 +104,28 @@ class Farabbi(Extraction):
         events = epochs.events
         events_to_keep = []
         indices_to_drop = []
+        number_of_rest = 0
+        number_of_movement = 0
         for i in range(len(events)):
             keep = False
             marker = events[i][2]
             last_marker = None if len(events_to_keep) == 0 else events_to_keep[len(events_to_keep) - 1][2]
 
             # Only keep the resting epoch if there was a movement epoch between this epoch and the last resting epoch
-            if marker == 12 or marker == 13:
+            if marker == 12 or marker == 13 or marker == 15:
                 epochs.events[i][2] = 2
+                number_of_rest += 1
                 keep = True
             # Only keep the first movement epoch between two resting epochs
-            elif marker == 10:
-                epochs.events[i][2] = 5
-                keep = True
-            elif marker == 11:
-                epochs.events[i][2] = 6
-                keep = True
+            if number_of_rest > number_of_movement:
+                if marker == 10:
+                    epochs.events[i][2] = 5
+                    number_of_movement += 1
+                    keep = True
+                elif marker == 11:
+                    epochs.events[i][2] = 6
+                    number_of_movement += 1
+                    keep = True
 
             if keep:
                 events_to_keep.append(events[i])

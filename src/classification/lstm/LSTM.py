@@ -18,7 +18,7 @@ class LSTM(Classifier):
         self.model = create_LSTM_model(np.array(data[0]).shape, y_train[0].shape)
         callback = EarlyStopping(monitor='loss', patience=1, min_delta=0.01)
         start = timer()
-        self.model.fit(np.array(data), y_train, epochs=50, shuffle=True, verbose=TRAINING_INFO, callbacks=[callback])
+        self.model.fit(np.array(data), y_train, epochs=50, shuffle=True, verbose=TRAINING_INFO, callbacks=[callback], batch_size=10)
         end = timer()
         time_of_training = end - start
         return time_of_training

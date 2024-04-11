@@ -1,4 +1,21 @@
 from abc import ABC, abstractmethod
+import numpy as np
+from mne import Epochs
+
+from src import config
+
+
+def square(eeg):
+    eeg = np.power(eeg, 2)
+    return eeg
+
+
+def transform_data_representation(epochs: Epochs) -> np.ndarray:
+    if config.FEATURE_VECTOR == "time":
+        return epochs.get_data()
+
+    elif config.FEATURE_VECTOR == "freq":
+        return epochs.compute_psd(fmin=8, fmax=30).get_data()
 
 
 class Extraction(ABC):

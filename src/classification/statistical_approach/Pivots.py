@@ -10,6 +10,14 @@ def create_pivots():
     return [Mean(), Median()]
 
 
+def normalize_data(data):
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=RuntimeWarning)
+        u = np.mean(data, axis=0)
+        s = np.std(data, axis=0)
+    return (data - u) / s
+
+
 class Pivot(ABC):
     @abstractmethod
     def compute(self, data):
@@ -34,11 +42,7 @@ class Mean(Pivot):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=RuntimeWarning)
             x = np.mean(data, axis=0)
-        # try:
-        #     x = np.mean(data, axis=0)
-        # except RuntimeWarning:
-        #     breakpoint()
-        self.value = x / np.linalg.norm(x)
+        self.value = normalize_data(x)
         return self.value
 
     def print_name(self):
@@ -57,7 +61,7 @@ class Median(Pivot):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", category=RuntimeWarning)
             x = np.median(data, axis=0)
-        self.value = x / np.linalg.norm(x)
+        self.value = normalize_data(x)
         return self.value
 
     def print_name(self):

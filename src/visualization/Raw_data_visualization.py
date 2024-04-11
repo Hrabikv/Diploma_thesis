@@ -13,9 +13,19 @@ def plot_data_of_all_subject(data, labels, title):
     # fig.show()
 
     X_embedded = apply_CSP(data, np.array(labels))
-    fig = px.scatter_3d(x=X_embedded.T[0], y=X_embedded.T[1], z=X_embedded.T[2], color=labels, title="CSP - {0}".format(title))
+    new_label = []
+    for l in labels:
+        if l == 2:
+            new_label.append("rest")
+        if l == 5:
+            new_label.append("left")
+        if l == 6:
+            new_label.append("right")
+        if l == 8:
+            new_label.append("pivot")
+    fig = px.scatter_3d(x=X_embedded.T[0], y=X_embedded.T[1], z=X_embedded.T[2], color=new_label, title="CSP - {0}".format(title))
     fig.show()
-
+    print()
     # X_embedded = apply_PCA(data)
     # fig = px.scatter(x=X_embedded.T[0], y=X_embedded.T[1], color=labels, title="PCA")
     # fig.show()

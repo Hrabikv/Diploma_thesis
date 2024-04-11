@@ -1,9 +1,11 @@
+import sys
 import numpy as np
 
 from .Pivots import create_pivots
 from .Metrics import EuclideanDistance
 from .Representative import Representative
 from ...config import NUMBER_OF_CLASSES
+from ...visualization.Raw_data_visualization import plot_data_of_all_subject
 
 metrics = [EuclideanDistance()]
 l3 = ["rest", "left", "right"]
@@ -33,9 +35,11 @@ class StatisticalClassification:
         for classes in range(number_of_classes):
             new_data.append([])
 
+        self.size = int(len(data[0])/3)
+
         for sample, label in zip(data, labels):
 
-            self.pom2.append(np.array([sample[:1000], sample[1000:2000], sample[2000:]]))
+            self.pom2.append(np.array([sample[:self.size], sample[self.size:self.size*2], sample[self.size*2:]]))
             if NUMBER_OF_CLASSES == 2:
                 if label == 20:
                     new_data[0].append(sample)
@@ -55,13 +59,11 @@ class StatisticalClassification:
         class_pivots = []
         for data, label in zip(self.class_data, self.labels):
             representatives = []
+            if len(data) == 0:
+                continue
             pivots = create_pivots()
             for pivot in pivots:
                 pivot.compute(data)
-                # plot_data_sample(pivot.compute(data), label)
-                # self.pom1 = np.append(self.pom1, 10)
-                # self.pom2.append(np.array([pivot.value[:1000], pivot.value[1000:2000], pivot.value[2000:]]))
-                # plot_data_of_all_subject(np.array(self.pom2), self.pom1, "{0} + {1}".format(label, pivot.print_name()))
                 representatives.append(pivot)
 
             class_pivots.append(representatives)
@@ -82,16 +84,17 @@ class StatisticalClassification:
             self.chose_best_pivots_globally_binary()
         elif NUMBER_OF_CLASSES == 3:
             self.chose_best_pivots_globally_multiclass()
-
-        # self.pom1 = np.concatenate([self.pom1, [1, 4, 7]])
+        #
+        # self.pom1 = np.concatenate([self.pom1, [8, 8, 8]])
         # for rep in self.results:
-        #     self.pom2.append(np.array([rep.get_pivot().value[:1000], rep.get_pivot().value[1000:2000], rep.get_pivot().value[2000:]]))
-
-        # plot_data_of_all_subject(np.array(self.pom2), self.pom1, "00")
+        #     self.pom2.append(np.array([rep.get_pivot().value[:self.size], rep.get_pivot().value[self.size:self.size*2],
+        #                                rep.get_pivot().value[self.size*2:]]))
+        #
+        # plot_data_of_all_subject(np.array(self.pom2), self.pom1, "Pivot example")
 
     def chose_best_pivots_globally_binary(self):
-        best_movement = Representative(value=1000, metric=None, pivot=None, label=None)
-        best_no_movement = Representative(value=1000, metric=None, pivot=None, label=None)
+        best_movement = Representative(value=sys.maxsize, metric=None, pivot=None, label=None)
+        best_no_movement = Representative(value=sys.maxsize, metric=None, pivot=None, label=None)
         for result in self.results:
             if result.get_label() == "no_movement":
                 if result.get_value() < best_no_movement.get_value():
@@ -103,9 +106,9 @@ class StatisticalClassification:
         self.results = [best_movement, best_no_movement]
 
     def chose_best_pivots_globally_multiclass(self):
-        best_rest = Representative(value=1000, metric=None, pivot=None, label=None)
-        best_left = Representative(value=1000, metric=None, pivot=None, label=None)
-        best_right = Representative(value=1000, metric=None, pivot=None, label=None)
+        best_rest = Representative(value=sys.maxsize, metric=None, pivot=None, label=None)
+        best_left = Representative(value=sys.maxsize, metric=None, pivot=None, label=None)
+        best_right = Representative(value=sys.maxsize, metric=None, pivot=None, label=None)
         for result in self.results:
             if result.get_label() == "rest":
                 if result.get_value() < best_rest.get_value():
@@ -131,7 +134,10 @@ class StatisticalClassification:
         # pom.append(np.array([sample[:1000], sample[1000:2000], sample[2000:]]))
 
         for rep in self.results:
-            distance = rep.get_metric().compute_distance(rep.get_pivot().value, sample)
+            if rep.get_pivot() is None:
+                distance = sys.maxsize
+            else:
+                distance = rep.get_metric().compute_distance(rep.get_pivot().value, sample)
             # pom.append(np.array([rep.get_pivot().value[:1000], rep.get_pivot().value[1000:2000], rep.get_pivot().value[2000:]]))
 
             if distance < value:

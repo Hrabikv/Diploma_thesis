@@ -1,5 +1,5 @@
 from .raw_result_manager import read_raw_result
-from src.vizualization.Results_vizualization import plot_results
+from src.visualization.Results_visualization import plot_results
 import numpy as np
 import pandas
 import os
@@ -10,7 +10,7 @@ def compute_final_results():
     if raw_results is None:
         return None
     results = {}
-    names = ["average_accuracy", "best_accuracy", "time_of_classification", "time_of_training"]
+    names = ["average_accuracy", "time_of_classification", "time_of_training", "best_accuracy"]
     for subject in raw_results:
         sub = raw_results[subject]
         types_results = {}
@@ -20,19 +20,25 @@ def compute_final_results():
             for classifier in t:
                 clas = t[classifier]
                 acc = 0
+                time_clas = 0
+                time_train = 0
                 i = 0
                 for f in clas["fold"]:
                     if f == 10:
                         acc += clas["accuracy"][i]
+                        time_clas += clas["time_of_classification"][i]
+                        time_train += clas["time_of_training"][i]
                         i += 1
                 values = []
                 if i != 0:
                     values.append(acc / i)
+                    values.append(time_clas / i)
+                    values.append(time_train / i)
                 else:
                     values.append(0)
+                    values.append(0)
+                    values.append(0)
                 values.append(np.max(clas["accuracy"]))
-                values.append(np.mean(clas["time_of_classification"]))
-                values.append(np.mean(clas["time_of_training"]))
                 tmp_results = {"names": names,
                                "values": values}
                 class_results[classifier] = tmp_results

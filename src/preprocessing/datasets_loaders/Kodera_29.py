@@ -1,6 +1,8 @@
-from .Extraction import Extraction
+from typing import Tuple
+
+from .Extraction import Extraction, square, transform_data_representation
 from src.utils.Constants import EPOCH_DROP_HALF_RESTING, EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
-from src.config import NUMBER_OF_CLASSES
+from src.config import NUMBER_OF_CLASSES, FEATURE_VECTOR
 from .data_formats.Saleh_format import SalehFormat
 from .data_formats.Mochura_format import MochaFormat
 from .data_formats.File_format import FileFormat
@@ -84,8 +86,8 @@ class Kodera(Extraction):
                 self.drop_half_resting(right_epochs)
                 right_labels = right_epochs.events[:, 2]
 
-                left_data = left_epochs.get_data()
-                right_data = right_epochs.get_data()
+                left_data = transform_data_representation(left_epochs)
+                right_data = transform_data_representation(right_epochs)
 
                 data.append(np.concatenate((left_data, right_data)))
                 labels.append(np.concatenate((left_labels, right_labels)))
@@ -116,7 +118,7 @@ class Kodera(Extraction):
         epochs.drop(resting_indices_to_remove, reason=EPOCH_DROP_HALF_RESTING)
 
     def get_epochs(self, files: list[FileFormat], movement_event: int, sample_frequency: int) \
-            -> tuple[None, None] | tuple[Epochs, np.ndarray]:
+            -> tuple[Epochs, None]:
         raws = [file.raw for file in files if file.raw is not None]
 
         if not raws:
@@ -145,11 +147,11 @@ class Kodera(Extraction):
         epochs.filter(l_freq, h_freq, verbose=False)
         epochs.drop_bad(reject={'eeg': REJECTION_THRESHOLD}, verbose=False)
 
-        self.equalize_epoch_events(epochs, movement_event)
+        events = self.equalize_epoch_events(epochs, movement_event)
 
-        return epochs, epochs.events[:, 2]
+        return epochs, events
 
-    def equalize_epoch_events(self, epochs: Epochs, movement_start_side_marker: int) -> None:
+    def equalize_epoch_events(self, epochs: Epochs, movement_start_side_marker: int):
         events = epochs.events
         events_to_keep = []
         indices_to_drop = []
@@ -175,6 +177,7 @@ class Kodera(Extraction):
         epochs.event_id = {f"{MovementType.RESTING.get_epoch_event()}": int(MovementType.RESTING.get_epoch_event()),
                            f"{movement_start_side_marker}": movement_start_side_marker}
         epochs.drop(indices_to_drop, reason=EPOCH_DROP_EQUALIZE)
+        return epochs.events[:, 2]
 
     def find_min_sampling_frequency(self, min_sampling_frequency: float) -> int:
 

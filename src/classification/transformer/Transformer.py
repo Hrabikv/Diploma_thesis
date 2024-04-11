@@ -26,7 +26,7 @@ class Transformer(Classifier):
             head_size=250,
             num_heads=4,
             ff_dim=4,
-            num_transformer_blocks=8,
+            num_transformer_blocks=4,
             mlp_units=[125],
             mlp_dropout=0.4,
             dropout=0.25,

@@ -14,8 +14,11 @@ from config import CLASSIFIERS, TYPE_OF_DATA
 def test_all_subjects(data, labels, classifiers):
     i = 1
     for subject, label in zip(data, labels):
+        if i < 31:
+            i += 1
+            continue
         cross_validation(vectors=subject, labels=label, classifiers=classifiers, subject="{}".format(i))
-        i = i + 1
+        i += 1
 
 
 def test_whole_dataset(data, labels, classifiers):
@@ -61,5 +64,5 @@ if __name__ == '__main__':
     if TYPE_OF_DATA == "Farabbi_12":
         test_Farabbi_12(d, l, classifiers_array)
 
-    create_final_results()
+    # create_final_results()
 

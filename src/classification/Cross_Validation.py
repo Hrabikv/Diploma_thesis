@@ -1,9 +1,11 @@
 import numpy as np
 from .Classifier import Classifier
-from src.vizualization.Results_vizualization import plot_raw_results
-from src.config import NUMBER_OF_CLASSES
+from src.visualization.Results_visualization import plot_raw_results
+from src.config import NUMBER_OF_CLASSES, FEATURE_VECTOR
 import csv
 import os
+import warnings
+warnings.filterwarnings("error")
 
 cross_start = 10
 cross_stop = 96
@@ -20,11 +22,19 @@ def reshape_data(data):
     return np.array(new_data)
 
 
+def normalize_data(data):
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=RuntimeWarning)
+        u = np.mean(data, axis=0)
+        s = np.std(data, axis=0)
+    return (data - u) / s
+
+
 def concatenate(data):
     new_data = []
     for sample in data:
         x = np.concatenate(sample)
-        new_data.append(x / np.linalg.norm(x))
+        new_data.append(normalize_data(x))
     return new_data
 
 
@@ -124,12 +134,14 @@ def compute_results(classifier, vectors, labels, step, i, is_sorted):
 
 
 def cross_validation(vectors, labels, classifiers: [Classifier], subject):
+    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
     steps = range(cross_start, cross_stop, base_cross_step)
     vectors = concatenate(vectors)
 
     new_vectors, new_labels = split_data_to_classes(vectors, labels)
     print("subject{0}".format(subject))
     for classifier in classifiers:
+        classifier.turn_on_off_CUDA()
         results = []
         results_sorted = []
         for step in steps:
@@ -155,6 +167,9 @@ def save_results(values_for_print, classificator, subject):
     if not os.path.isdir(path):
         os.mkdir(path)
     path = path + "/subject_{0}".format(subject)
+    if not os.path.isdir(path):
+        os.mkdir(path)
+    path = path + "/" + FEATURE_VECTOR
     if not os.path.isdir(path):
         os.mkdir(path)
 

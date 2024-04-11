@@ -54,18 +54,3 @@ def transform_to_binary(labels):
     return np.array(new_labels, dtype=object)
 
 
-def epochs_to_time_frequency(epochs: Epochs) -> EpochsTFR:
-    """
-    Converts given epochs object to time frequency domain using Morlet wavelet method.
-    The frequency range is set by config.l_freq and config.h_freq, the time domain is decimated by a factor of 4.
-
-    :param epochs: epochs that are to be converted to time frequency domain
-    :return: the converted EpochsTFR object instance
-    """
-    freqs = np.arange(8, 30 + 1)
-    n_cycles = freqs / 2
-    epochs_tfr = mne.time_frequency.tfr_morlet(epochs, freqs, n_cycles,
-                                               use_fft=True, decim=4, average=False, return_itc=False)
-
-    return epochs_tfr
-
