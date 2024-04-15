@@ -1,6 +1,6 @@
 import numpy as np
 from src.classification.Classifier import Classifier, convert_labels_to_OneHot
-from .MLP_model import create_MLP_model
+from .MLP_model import create_MLP_model, create_MLP_model_Kodera
 from timeit import default_timer as timer
 from keras.callbacks import EarlyStopping
 from src.config import TRAINING_INFO, TESTING_INFO

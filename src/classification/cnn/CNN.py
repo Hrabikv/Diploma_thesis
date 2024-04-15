@@ -29,7 +29,7 @@ class CNN(Classifier):
         data = reshape_data(data)
         scores = self.model.evaluate(np.array(data), y_train, verbose=TESTING_INFO)
         start = timer()
-        self.model.evaluate(np.array([data[0]]), np.array([y_train[0]]), verbose=1)
+        self.model.evaluate(np.array([data[0]]), np.array([y_train[0]]), verbose=0)
         end = timer()
         time_of_classification = end - start
 

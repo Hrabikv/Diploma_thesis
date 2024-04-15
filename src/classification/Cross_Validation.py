@@ -137,9 +137,9 @@ def cross_validation(vectors, labels, classifiers: [Classifier], subject):
     os.environ['CUDA_VISIBLE_DEVICES'] = '0'
     steps = range(cross_start, cross_stop, base_cross_step)
     vectors = concatenate(vectors)
-
-    new_vectors, new_labels = split_data_to_classes(vectors, labels)
-    print("subject{0}".format(subject))
+    print(subject)
+    if NUMBER_OF_CLASSES == 3:
+        new_vectors, new_labels = split_data_to_classes(vectors, labels)
     for classifier in classifiers:
         classifier.turn_on_off_CUDA()
         results = []
@@ -150,13 +150,16 @@ def cross_validation(vectors, labels, classifiers: [Classifier], subject):
                 unsorted_results = compute_results(classifier, vectors, labels, step, i, False)
                 if unsorted_results is None:
                     continue
+
                 results.append(unsorted_results)
-                sorted_results = compute_results(classifier, new_vectors, new_labels, step, i, True)
-                if sorted_results is None:
-                    continue
-                results_sorted.append(sorted_results)
+                if NUMBER_OF_CLASSES == 3:
+                    sorted_results = compute_results(classifier, new_vectors, new_labels, step, i, True)
+                    if sorted_results is None:
+                        continue
+                    results_sorted.append(sorted_results)
         save_results(results, classifier.name, subject)
-        save_results(results_sorted, "{0}_sorted".format(classifier.name), subject)
+        if NUMBER_OF_CLASSES == 3:
+            save_results(results_sorted, "{0}_sorted".format(classifier.name), subject)
 
 
 def save_results(values_for_print, classificator, subject):
@@ -166,7 +169,7 @@ def save_results(values_for_print, classificator, subject):
     path = path + "/raw_results"
     if not os.path.isdir(path):
         os.mkdir(path)
-    path = path + "/subject_{0}".format(subject)
+    path = path + "/{0}".format(subject)
     if not os.path.isdir(path):
         os.mkdir(path)
     path = path + "/" + FEATURE_VECTOR

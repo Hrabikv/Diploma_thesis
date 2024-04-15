@@ -31,7 +31,6 @@ class Classifier(ABC):
         pass
 
     def turn_on_off_CUDA(self):
-        print()
         if self.name == "Transformer":
             os.environ['CUDA_VISIBLE_DEVICES'] = '0'
         else:
