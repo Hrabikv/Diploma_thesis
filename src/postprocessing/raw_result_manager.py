@@ -1,7 +1,20 @@
 import os
 import pandas
+from src.config import TYPE_OF_DATA
 
 RAW_RESULT_PATH = "results/raw_results"
+
+
+def strip_subjects(subjects):
+    results = []
+    for subject in subjects:
+        if subject == TYPE_OF_DATA:
+            results.append(subject)
+            continue
+        if TYPE_OF_DATA == "intra-subject":
+            if subject.startswith("subject"):
+                results.append(subject)
+    return results
 
 
 def read_raw_result():
@@ -9,7 +22,8 @@ def read_raw_result():
     if not os.path.exists(RAW_RESULT_PATH):
         return None
 
-    subjects = os.listdir(RAW_RESULT_PATH)
+    subjects = strip_subjects(os.listdir(RAW_RESULT_PATH))
+
     raw_results = {}
     for subject in subjects:
         path = RAW_RESULT_PATH + "/" + subject

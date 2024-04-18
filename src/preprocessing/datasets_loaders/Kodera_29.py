@@ -98,7 +98,7 @@ class Kodera(Extraction):
                 if epochs is None:
                     continue
 
-                epochs_data = epochs.get_data()
+                epochs_data = transform_data_representation(epochs)
 
                 data.append(epochs_data)
                 labels.append(epochs_labels)

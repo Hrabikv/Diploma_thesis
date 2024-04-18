@@ -62,19 +62,21 @@ def compute_final_results():
     return results
 
 
-def save_results(data_per_class, path):
+def save_results(data_per_class, path, dir):
     # if os.path.exists(path):
     #     os.remove(path)
     index = data_per_class.pop('names')
     df = pandas.DataFrame(data_per_class, index=index).T
     # df.to_csv(path + '.csv')
+    if not os.path.exists(dir):
+        os.makedirs(dir)
     df.to_excel(path + '.xlsx')
 
 
 def save_final_results(results):
-    path = "results"
+    path = "results/" + TYPE_OF_DATA
     for result in results:
-        save_results(results[result], path + '/' + TYPE_OF_DATA + '_' + result)
+        save_results(results[result], path + "/" + TYPE_OF_DATA + '_' + result, path)
     # for subject in results:
     #     subject_path = path + "/" + subject
     #     if not os.path.exists(subject_path):
