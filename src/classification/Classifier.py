@@ -29,9 +29,3 @@ class Classifier(ABC):
     @abstractmethod
     def validate(self, data, labels) -> [float, float]:
         pass
-
-    def turn_on_off_CUDA(self):
-        if self.name == "Transformer":
-            os.environ['CUDA_VISIBLE_DEVICES'] = '0'
-        else:
-            os.environ['CUDA_VISIBLE_DEVICES'] = '-1'

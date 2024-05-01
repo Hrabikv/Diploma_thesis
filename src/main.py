@@ -1,6 +1,5 @@
 import numpy as np
 
-from preprocessing import ETL
 from classification.Cross_Validation import cross_validation
 from classification.statistical_approach.Statistic_classification import StatisticClassification
 from classification.cnn.CNN import CNN
@@ -8,34 +7,36 @@ from classification.mlp.MLP import MLP
 from classification.lstm.LSTM import LSTM
 from classification.transformer.Transformer import Transformer
 from postprocessing.result_manager import create_final_results
-from config import CLASSIFIERS, TYPE_OF_DATA
+from preprocessing import ETL
+from utils.config import CLASSIFIERS, TYPE_OF_DATA
+from utils.configReader import readConfig
 
 
 def test_all_subjects(data, labels, classifiers):
     i = 1
     for subject, label in zip(data, labels):
-        if i < 31:
-            i += 1
-            continue
-        cross_validation(vectors=subject, labels=label, classifiers=classifiers, subject="{}".format(i))
+        name = i
+        if i < 10:
+            name = '0{}'.format(i)
+        cross_validation(vectors=subject, labels=label, classifiers=classifiers, subject="subject_{}".format(name))
         i += 1
 
 
 def test_whole_dataset(data, labels, classifiers):
     data = np.concatenate(data)
     labels = np.concatenate(labels)
-    cross_validation(vectors=data, labels=labels, classifiers=classifiers, subject="All_subject_together")
+    cross_validation(vectors=data, labels=labels, classifiers=classifiers, subject="all")
 
 
 def test_Kodera_29(data, labels, classifiers):
     data = np.concatenate(np.array(data)[:29])
     labels = np.concatenate(np.array(labels)[:29])
-    cross_validation(vectors=data, labels=labels, classifiers=classifiers, subject="Kodera_29")
+    cross_validation(vectors=data, labels=labels, classifiers=classifiers, subject="Kodera_29_02")
 
 
 def test_Farabbi_12(data, labels, classifiers):
-    data = (np.array(data)[29:])
-    labels = (np.array(labels)[29:])
+    data = np.concatenate((np.array(data)[29:]))
+    labels = np.concatenate((np.array(labels)[29:]))
     cross_validation(vectors=data, labels=labels, classifiers=classifiers, subject="Farabbi_12")
 
 
@@ -52,6 +53,9 @@ def create_array_of_classifiers():
 
 
 if __name__ == '__main__':
+
+    readConfig()
+
     d, l = ETL.load_data()
     classifiers_array = create_array_of_classifiers()
 
@@ -64,5 +68,5 @@ if __name__ == '__main__':
     if TYPE_OF_DATA == "Farabbi_12":
         test_Farabbi_12(d, l, classifiers_array)
 
-    # create_final_results()
+    create_final_results()
 

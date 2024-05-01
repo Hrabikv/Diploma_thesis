@@ -1,10 +1,10 @@
 import numpy as np
-from src.classification.Classifier import Classifier, convert_labels_to_OneHot
+from classification.Classifier import Classifier, convert_labels_to_OneHot
 from .CNN_model import create_CNN_model
 from timeit import default_timer as timer
 from ..Cross_Validation import reshape_data
 from keras.callbacks import EarlyStopping
-from src.config import TRAINING_INFO, TESTING_INFO
+from utils.config import TRAINING_INFO, TESTING_INFO
 
 
 class CNN(Classifier):

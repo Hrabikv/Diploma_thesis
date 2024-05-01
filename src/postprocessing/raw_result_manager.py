@@ -1,6 +1,6 @@
 import os
 import pandas
-from src.config import TYPE_OF_DATA
+from utils.config import TYPE_OF_DATA
 
 RAW_RESULT_PATH = "results/raw_results"
 

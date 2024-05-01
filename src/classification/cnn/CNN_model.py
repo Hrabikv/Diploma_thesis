@@ -2,7 +2,8 @@ import tensorflow as tf
 from keras.models import Model
 import keras.layers as kl
 from keras import Sequential
-from src.config import FEATURE_VECTOR
+from utils.config import FEATURE_VECTOR
+from keras.constraints import max_norm
 
 
 def create_CNN_model(input_shape, output_shape):
@@ -38,17 +39,39 @@ def create_CNN_model(input_shape, output_shape):
 
     return model
 
-    # input_layer = Input(input_shape)
-    #
-    # model.add(input_layer)
-    # model.add(Conv1D(filters=64, kernel_size=3, padding="same", activation=tf.nn.relu, kernel_initializer=initializer))
-    # model.add(BatchNormalization(momentum=0.8))
-    # model.add(Conv1D(filters=64, kernel_size=3, padding="same",  activation=tf.nn.relu, kernel_initializer=initializer))
-    # model.add(BatchNormalization(momentum=0.8))
-    # model.add(Conv1D(filters=64, kernel_size=3, padding="same",  activation=tf.nn.relu, kernel_initializer=initializer))
-    # model.add(BatchNormalization(momentum=0.8))
-    # model.add(GlobalAveragePooling1D(output_shape[0], activation='softmax', kernel_initializer=initializer))
-    #
-    # model.compile(optimizer="adam", loss='categorical_crossentropy', metrics=["accuracy"])
-    #
-    # return model
+
+def create_CNN_model_Kodera(input_shape, output_shape):
+    height = input_shape[0]
+    conv_depth = 2
+    filters_block1 = 8
+    filters_block2 = 16
+    kernel_size_block1 = 64
+    kernel_size_block2 = 16
+    dropout_rate = 0.5
+    pool_size = 4
+    model = Sequential([
+        # Block 1
+        kl.Conv1D(filters_block1, kernel_size_block1, padding='same', input_shape=input_shape),
+        kl.BatchNormalization(),
+        kl.DepthwiseConv1D(kernel_size_block1, depth_multiplier=conv_depth, depthwise_constraint=max_norm(1.)),
+        kl.BatchNormalization(),
+        kl.Activation('relu'),
+        kl.AveragePooling1D(pool_size=pool_size),
+        kl.Dropout(dropout_rate),
+
+        # Block 2
+        kl.SeparableConv1D(filters_block2, kernel_size_block2, padding='same'),
+        kl.BatchNormalization(),
+        kl.Activation('relu'),
+        kl.AveragePooling1D(pool_size=pool_size),
+        kl.Dropout(dropout_rate),
+
+        kl.Flatten(),
+
+        kl.Dense(output_shape[0], activation='softmax')
+    ], name="CNN_Kodera")
+
+
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+    return model

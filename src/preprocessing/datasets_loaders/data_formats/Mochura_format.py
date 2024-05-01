@@ -1,4 +1,4 @@
-from src.enums.MovementType import MovementType
+from enums.MovementType import MovementType
 from .File_format import FileFormat
 
 import re

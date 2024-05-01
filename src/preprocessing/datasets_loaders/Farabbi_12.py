@@ -1,6 +1,6 @@
 from .Extraction import Extraction, transform_data_representation
-from src.utils.Constants import EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
-from src.enums.MovementType import MovementType
+from utils.Constants import EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
+from enums.MovementType import MovementType
 
 
 import numpy as np
@@ -69,8 +69,7 @@ class Farabbi(Extraction):
 
         return data, labels
 
-    def get_epochs(self, files, sample_frequency: int) \
-            -> tuple[None, None] | tuple[Epochs, np.ndarray]:
+    def get_epochs(self, files, sample_frequency: int):
         tmin = -3.5
         tmax = 0.5
         l_freq = 8
@@ -100,7 +99,7 @@ class Farabbi(Extraction):
 
         return epochs, epochs.events[:, 2]
 
-    def equalize_epoch_events(self, epochs: Epochs) -> None:
+    def equalize_epoch_events(self, epochs: Epochs):
         events = epochs.events
         events_to_keep = []
         indices_to_drop = []
@@ -138,7 +137,7 @@ class Farabbi(Extraction):
                            }
         epochs.drop(indices_to_drop, reason=EPOCH_DROP_EQUALIZE)
 
-    def find_min_sampling_frequency(self, min_sampling_frequency: float) -> int:
+    def find_min_sampling_frequency(self, min_sampling_frequency: float):
 
         for subject_files in self.files_per_subject:
             for file in subject_files:

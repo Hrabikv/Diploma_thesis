@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 from mne import Epochs
 
-from src import config
+from utils import config
 
 
 def square(eeg):

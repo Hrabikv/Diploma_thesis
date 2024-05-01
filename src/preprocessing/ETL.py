@@ -1,13 +1,10 @@
+from .Data_manager import save_preprocessed_data, load_preprocessed_data
 from .datasets_loaders.Kodera_29 import Kodera
 from .datasets_loaders.Farabbi_12 import Farabbi
-from src.preprocessing.Data_manager import save_preprocessed_data, load_preprocessed_data
-from src.config import NUMBER_OF_CLASSES
+from utils.config import NUMBER_OF_CLASSES
 
 import sys
-import mne
 import numpy as np
-from mne import Epochs
-from mne.time_frequency import EpochsTFR
 
 
 def load_data() -> tuple[np.ndarray, np.ndarray]:

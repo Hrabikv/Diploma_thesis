@@ -1,7 +1,7 @@
 import plotly.express as px
 import numpy as np
 from sklearn.manifold import TSNE
-from src.preprocessing.Data_reduction import apply_CSP
+from ..preprocessing.Data_reduction import apply_CSP
 
 
 def plot_data_of_all_subject(data, labels, title):

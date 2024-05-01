@@ -1,9 +1,9 @@
-from ..Classifier import Classifier, convert_labels_to_OneHot
+from classification.Classifier import Classifier, convert_labels_to_OneHot
 from .LSTM_model import create_LSTM_model
 from timeit import default_timer as timer
 from keras.callbacks import EarlyStopping
 import numpy as np
-from src.config import TRAINING_INFO, TESTING_INFO
+from utils.config import TRAINING_INFO, TESTING_INFO
 
 
 class LSTM(Classifier):

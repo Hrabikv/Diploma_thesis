@@ -1,8 +1,7 @@
 from .raw_result_manager import read_raw_result
-from src.visualization.Results_visualization import plot_results
 import numpy as np
 import pandas
-from src.config import TYPE_OF_DATA
+from utils.config import TYPE_OF_DATA
 import os
 
 
@@ -63,11 +62,8 @@ def compute_final_results():
 
 
 def save_results(data_per_class, path, dir):
-    # if os.path.exists(path):
-    #     os.remove(path)
     index = data_per_class.pop('names')
     df = pandas.DataFrame(data_per_class, index=index).T
-    # df.to_csv(path + '.csv')
     if not os.path.exists(dir):
         os.makedirs(dir)
     df.to_excel(path + '.xlsx')
@@ -77,18 +73,6 @@ def save_final_results(results):
     path = "results/" + TYPE_OF_DATA
     for result in results:
         save_results(results[result], path + "/" + TYPE_OF_DATA + '_' + result, path)
-    # for subject in results:
-    #     subject_path = path + "/" + subject
-    #     if not os.path.exists(subject_path):
-    #         os.mkdir(subject_path)
-    #     sub = results[subject]
-    #     for typ in sub:
-    #         type_path = subject_path + "/" + typ
-    #         if not os.path.exists(type_path):
-    #             os.mkdir(type_path)
-    #         t = sub[typ]
-    #         save_results(t, type_path + "/results.csv")
-    #         plot_results(t, type_path)
 
 
 def create_final_results():

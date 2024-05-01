@@ -1,7 +1,7 @@
 import numpy as np
 import os
 
-from src.config import NUMBER_OF_CLASSES, FEATURE_VECTOR
+from utils.config import NUMBER_OF_CLASSES, FEATURE_VECTOR
 
 DATA_FOLDER = "PREPROCESSED_DATA_FOLDER"
 DATA_FOLDER_02 = DATA_FOLDER + "/" + FEATURE_VECTOR

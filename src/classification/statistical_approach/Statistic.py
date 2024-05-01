@@ -4,8 +4,7 @@ import numpy as np
 from .Pivots import create_pivots
 from .Metrics import EuclideanDistance
 from .Representative import Representative
-from ...config import NUMBER_OF_CLASSES
-from ...visualization.Raw_data_visualization import plot_data_of_all_subject
+from utils.config import NUMBER_OF_CLASSES
 
 metrics = [EuclideanDistance()]
 l3 = ["rest", "left", "right"]

@@ -1,7 +1,7 @@
 import numpy as np
 from .Classifier import Classifier
-from src.visualization.Results_visualization import plot_raw_results
-from src.config import NUMBER_OF_CLASSES, FEATURE_VECTOR
+from visualization.Results_visualization import plot_raw_results
+from utils.config import NUMBER_OF_CLASSES, FEATURE_VECTOR
 import csv
 import os
 import warnings
@@ -134,16 +134,15 @@ def compute_results(classifier, vectors, labels, step, i, is_sorted):
 
 
 def cross_validation(vectors, labels, classifiers: [Classifier], subject):
-    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
     steps = range(cross_start, cross_stop, base_cross_step)
     vectors = concatenate(vectors)
     print(subject)
     if NUMBER_OF_CLASSES == 3:
         new_vectors, new_labels = split_data_to_classes(vectors, labels)
     for classifier in classifiers:
-        classifier.turn_on_off_CUDA()
         results = []
         results_sorted = []
+        i = 0
         for step in steps:
             fold = (int(len(vectors) * step / 100))
             for i in range(int(len(vectors) / fold)):

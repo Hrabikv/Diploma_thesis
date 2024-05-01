@@ -1,7 +1,7 @@
-from src.classification.Classifier import Classifier
-from src.classification.statistical_approach.Statistic import StatisticalClassification
+from classification.Classifier import Classifier
+from classification.statistical_approach.Statistic import StatisticalClassification
 from timeit import default_timer as timer
-from src.config import TESTING_INFO, TRAINING_INFO
+from utils.config import TESTING_INFO, TRAINING_INFO
 
 l = {"rest": 2, "left": 5, "right": 6, "no_movement": 20, "movement": 30}
 

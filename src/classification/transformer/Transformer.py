@@ -1,9 +1,9 @@
-from ..Classifier import Classifier, convert_labels_to_OneHot
+from classification.Classifier import Classifier, convert_labels_to_OneHot
 import numpy as np
 from timeit import default_timer as timer
 from keras.callbacks import EarlyStopping
 from .Transformer_model import create_Transformer_model
-from src.config import TRAINING_INFO, TESTING_INFO
+from utils.config import TRAINING_INFO, TESTING_INFO
 
 
 class Transformer(Classifier):

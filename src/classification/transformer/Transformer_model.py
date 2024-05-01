@@ -1,6 +1,6 @@
 import keras.layers as layers
 import keras
-from src.config import NUMBER_OF_CLASSES
+from utils.config import NUMBER_OF_CLASSES
 
 
 def transformer_encoder(inputs, head_size, num_heads, ff_dim, dropout=0):

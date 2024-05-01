@@ -1,13 +1,11 @@
-from typing import Tuple
-
-from .Extraction import Extraction, square, transform_data_representation
-from src.utils.Constants import EPOCH_DROP_HALF_RESTING, EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
-from src.config import NUMBER_OF_CLASSES, FEATURE_VECTOR
+from .Extraction import Extraction, transform_data_representation
+from utils.Constants import EPOCH_DROP_HALF_RESTING, EPOCH_DROP_EQUALIZE, REJECTION_THRESHOLD
+from utils.config import NUMBER_OF_CLASSES
 from .data_formats.Saleh_format import SalehFormat
 from .data_formats.Mochura_format import MochaFormat
 from .data_formats.File_format import FileFormat
-from src.enums.MovementType import MovementType
-from src.enums.EpochEvent import EpochEvent
+from enums.MovementType import MovementType
+from enums.EpochEvent import EpochEvent
 
 import random
 import logging as log
