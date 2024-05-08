@@ -1,10 +1,10 @@
 import numpy as np
 import os
 
-from utils.config import NUMBER_OF_CLASSES, FEATURE_VECTOR
+from utils.config import Config
 
 DATA_FOLDER = "PREPROCESSED_DATA_FOLDER"
-DATA_FOLDER_02 = DATA_FOLDER + "/" + FEATURE_VECTOR
+
 
 
 def create_folders(folder_path: str) -> None:
@@ -16,11 +16,12 @@ def exists(path: str) -> bool:
 
 
 def save_preprocessed_data(data: np.ndarray, labels: np.ndarray) -> None:
+    DATA_FOLDER_02 = DATA_FOLDER + "/" + Config.FEATURE_VECTOR
 
     create_folders(DATA_FOLDER)
     create_folders(DATA_FOLDER_02)
 
-    if NUMBER_OF_CLASSES == 3:
+    if Config.NUMBER_OF_CLASSES == 3:
         labels_file_path = DATA_FOLDER_02 + "/labels_3.npy"
         data_file_path = DATA_FOLDER_02 + "/data_3.npy"
     else:
@@ -32,8 +33,9 @@ def save_preprocessed_data(data: np.ndarray, labels: np.ndarray) -> None:
 
 
 def load_preprocessed_data() -> tuple:
+    DATA_FOLDER_02 = DATA_FOLDER + "/" + Config.FEATURE_VECTOR
 
-    if NUMBER_OF_CLASSES == 3:
+    if Config.NUMBER_OF_CLASSES == 3:
         labels_file_path = DATA_FOLDER_02 + "/labels_3.npy"
         data_file_path = DATA_FOLDER_02 + "/data_3.npy"
     else:

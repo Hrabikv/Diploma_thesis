@@ -1,7 +1,7 @@
 from .Data_manager import save_preprocessed_data, load_preprocessed_data
 from .datasets_loaders.Kodera_29 import Kodera
 from .datasets_loaders.Farabbi_12 import Farabbi
-from utils.config import NUMBER_OF_CLASSES
+from utils.config import Config
 
 import sys
 import numpy as np
@@ -30,7 +30,7 @@ def load_data() -> tuple[np.ndarray, np.ndarray]:
     data = np.concatenate(data)
     labels = np.concatenate(labels)
 
-    if NUMBER_OF_CLASSES == 2:
+    if Config.NUMBER_OF_CLASSES == 2:
         labels = transform_to_binary(labels)
 
     save_preprocessed_data(data, labels)

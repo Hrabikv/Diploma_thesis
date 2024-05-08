@@ -1,7 +1,7 @@
 from classification.Classifier import Classifier
 from classification.statistical_approach.Statistic import StatisticalClassification
 from timeit import default_timer as timer
-from utils.config import TESTING_INFO, TRAINING_INFO
+from utils.config import Config
 
 l = {"rest": 2, "left": 5, "right": 6, "no_movement": 20, "movement": 30}
 
@@ -19,7 +19,7 @@ class StatisticClassification(Classifier):
         classifier.compute_pivots_value_of_representations()
         end = timer()
         time_of_training = end - start
-        if TRAINING_INFO == 1 or TRAINING_INFO == 2:
+        if Config.TRAINING_INFO == 1 or Config.TRAINING_INFO == 2:
             print("New Pivots are computed.")
         self.classifier = classifier
         return time_of_training
@@ -43,7 +43,7 @@ class StatisticClassification(Classifier):
             return 0, -1
 
         acc = (len(correctly)/len(labels))*100
-        if TESTING_INFO == 1 or TESTING_INFO == 2:
+        if Config.TESTING_INFO == 1 or Config.TESTING_INFO == 2:
             print("Accuracy: {0}".format(acc))
 
         return acc, time_of_classification

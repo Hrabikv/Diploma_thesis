@@ -1,5 +1,5 @@
 # 2 - binary classification, 3 - multiclass classification
-NUMBER_OF_CLASSES = 3
+NUMBER_OF_CLASSES = 2
 
 # 0 = silent, 1 = progress bar, 2 = one line per epoch
 TRAINING_INFO = 2
@@ -8,9 +8,9 @@ TRAINING_INFO = 2
 TESTING_INFO = 1
 
 # Implemented classifiers are: Statistic, MLP, CNN, LSTM, Transformer
-CLASSIFIERS = MLP, CNN
+CLASSIFIERS = Transformer
 
-# which part of dataset will be pass into classifiers
+# which part of the dataset will be passed into classifiers
 # "intra-subject" - each subject from both datasets
 # "all" - all 41 subjects from both datasets as inter-subject
 # "Kodera_29" 29 subjects from Kodera_29 as inter-subject
@@ -21,5 +21,5 @@ TYPE_OF_DATA = Kodera_29
 FEATURE_VECTOR = time
 
 # true - for use of CUDA GPU, false - if you don't want to use CUDA GPU
-CUDA_USE = false
+CUDA_USE = true
 

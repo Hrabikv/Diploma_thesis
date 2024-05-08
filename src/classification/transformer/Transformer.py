@@ -3,7 +3,7 @@ import numpy as np
 from timeit import default_timer as timer
 from keras.callbacks import EarlyStopping
 from .Transformer_model import create_Transformer_model
-from utils.config import TRAINING_INFO, TESTING_INFO
+from utils.config import Config
 
 
 class Transformer(Classifier):
@@ -33,7 +33,7 @@ class Transformer(Classifier):
         )
         callback = EarlyStopping(monitor='loss', patience=2, restore_best_weights=True)
         start = timer()
-        self.model.fit(x_train, y_train, epochs=100, shuffle=True, verbose=TRAINING_INFO, callbacks=[callback], batch_size=10)
+        self.model.fit(x_train, y_train, epochs=100, shuffle=True, verbose=Config.TRAINING_INFO, callbacks=[callback], batch_size=10)
         end = timer()
         time_of_training = end - start
         return time_of_training
@@ -43,7 +43,7 @@ class Transformer(Classifier):
         y_train[y_train == -1] = 0
         x_test = np.array(data)
         x_test = x_test.reshape((x_test.shape[0], 3, int(x_test.shape[1]/3)))
-        scores = self.model.evaluate(x_test, y_train, verbose=TESTING_INFO)
+        scores = self.model.evaluate(x_test, y_train, verbose=Config.TESTING_INFO)
         start = timer()
         self.model.evaluate(np.array([x_test[0]]), np.array([y_train[0]]), verbose=0)
         end = timer()

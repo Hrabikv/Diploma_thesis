@@ -1,7 +1,7 @@
 import numpy as np
 from .Classifier import Classifier
 from visualization.Results_visualization import plot_raw_results
-from utils.config import NUMBER_OF_CLASSES, FEATURE_VECTOR
+from utils.config import Config
 import csv
 import os
 import warnings
@@ -41,7 +41,7 @@ def concatenate(data):
 def split_data_to_classes(data, labels):
     new_data = []
     new_labels = []
-    for classes in range(NUMBER_OF_CLASSES):
+    for classes in range(Config.NUMBER_OF_CLASSES):
         new_data.append([])
         new_labels.append([])
 
@@ -137,7 +137,7 @@ def cross_validation(vectors, labels, classifiers: [Classifier], subject):
     steps = range(cross_start, cross_stop, base_cross_step)
     vectors = concatenate(vectors)
     print(subject)
-    if NUMBER_OF_CLASSES == 3:
+    if Config.NUMBER_OF_CLASSES == 3:
         new_vectors, new_labels = split_data_to_classes(vectors, labels)
     for classifier in classifiers:
         results = []
@@ -151,13 +151,13 @@ def cross_validation(vectors, labels, classifiers: [Classifier], subject):
                     continue
 
                 results.append(unsorted_results)
-                if NUMBER_OF_CLASSES == 3:
+                if Config.NUMBER_OF_CLASSES == 3:
                     sorted_results = compute_results(classifier, new_vectors, new_labels, step, i, True)
                     if sorted_results is None:
                         continue
                     results_sorted.append(sorted_results)
         save_results(results, classifier.name, subject)
-        if NUMBER_OF_CLASSES == 3:
+        if Config.NUMBER_OF_CLASSES == 3:
             save_results(results_sorted, "{0}_sorted".format(classifier.name), subject)
 
 
@@ -171,13 +171,13 @@ def save_results(values_for_print, classificator, subject):
     path = path + "/{0}".format(subject)
     if not os.path.isdir(path):
         os.mkdir(path)
-    path = path + "/" + FEATURE_VECTOR
+    path = path + "/" + Config.FEATURE_VECTOR
     if not os.path.isdir(path):
         os.mkdir(path)
 
-    if NUMBER_OF_CLASSES == 2:
+    if Config.NUMBER_OF_CLASSES == 2:
         path = path + "/binary"
-    elif NUMBER_OF_CLASSES == 3:
+    elif Config.NUMBER_OF_CLASSES == 3:
         path = path + "/multi_class"
     if not os.path.isdir(path):
         os.mkdir(path)

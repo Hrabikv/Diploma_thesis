@@ -2,7 +2,7 @@ import tensorflow as tf
 from keras.models import Model
 import keras.layers as kl
 from keras import Sequential
-from utils.config import FEATURE_VECTOR
+from utils.config import Config
 from keras.constraints import max_norm
 
 
@@ -11,10 +11,10 @@ def create_CNN_model(input_shape, output_shape):
 
     input_layer = kl.Input(input_shape)
 
-    if FEATURE_VECTOR == "time":
+    if Config.FEATURE_VECTOR == "time":
         filter_size = 100
         kernel_size = 5
-    elif FEATURE_VECTOR == "freq":
+    elif Config.FEATURE_VECTOR == "freq":
         filter_size = 10
         kernel_size = 5
 

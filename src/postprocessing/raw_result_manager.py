@@ -1,6 +1,6 @@
 import os
 import pandas
-from utils.config import TYPE_OF_DATA
+from utils.config import Config
 
 RAW_RESULT_PATH = "results/raw_results"
 
@@ -8,10 +8,10 @@ RAW_RESULT_PATH = "results/raw_results"
 def strip_subjects(subjects):
     results = []
     for subject in subjects:
-        if subject == TYPE_OF_DATA:
+        if subject == Config.TYPE_OF_DATA:
             results.append(subject)
             continue
-        if TYPE_OF_DATA == "intra-subject":
+        if Config.TYPE_OF_DATA == "intra-subject":
             if subject.startswith("subject"):
                 results.append(subject)
     return results

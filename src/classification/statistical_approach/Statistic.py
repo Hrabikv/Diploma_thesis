@@ -4,7 +4,7 @@ import numpy as np
 from .Pivots import create_pivots
 from .Metrics import EuclideanDistance
 from .Representative import Representative
-from utils.config import NUMBER_OF_CLASSES
+from utils.config import Config
 
 metrics = [EuclideanDistance()]
 l3 = ["rest", "left", "right"]
@@ -21,13 +21,13 @@ class StatisticalClassification:
         self.pom2 = None
         self.labels = None
         self.labels_names = None
-        if NUMBER_OF_CLASSES == 2:
+        if Config.NUMBER_OF_CLASSES == 2:
             self.labels = l2
-        elif NUMBER_OF_CLASSES == 3:
+        elif Config.NUMBER_OF_CLASSES == 3:
             self.labels = l3
-        self._create_class_dependent_data(data=data, labels=labels)
+        self._create_class_dependent_data(data=data, labels=labels, number_of_classes=Config.NUMBER_OF_CLASSES)
 
-    def _create_class_dependent_data(self, number_of_classes=NUMBER_OF_CLASSES, data=None, labels=None):
+    def _create_class_dependent_data(self, number_of_classes=Config.NUMBER_OF_CLASSES, data=None, labels=None):
         self.pom1 = np.array(labels)
         self.pom2 = []
         new_data = []
@@ -39,12 +39,12 @@ class StatisticalClassification:
         for sample, label in zip(data, labels):
 
             self.pom2.append(np.array([sample[:self.size], sample[self.size:self.size*2], sample[self.size*2:]]))
-            if NUMBER_OF_CLASSES == 2:
+            if Config.NUMBER_OF_CLASSES == 2:
                 if label == 20:
                     new_data[0].append(sample)
                 elif label == 30:
                     new_data[1].append(sample)
-            elif NUMBER_OF_CLASSES == 3:
+            elif Config.NUMBER_OF_CLASSES == 3:
                 if label == 2:
                     new_data[0].append(sample)
                 elif label == 5:
@@ -79,9 +79,9 @@ class StatisticalClassification:
                         distance = distance + metric.compute_distance(p.value, sample)
                     results.append(Representative(value=distance, metric=metric, pivot=p, label=label))
         self.results = results
-        if NUMBER_OF_CLASSES == 2:
+        if Config.NUMBER_OF_CLASSES == 2:
             self.chose_best_pivots_globally_binary()
-        elif NUMBER_OF_CLASSES == 3:
+        elif Config.NUMBER_OF_CLASSES == 3:
             self.chose_best_pivots_globally_multiclass()
         #
         # self.pom1 = np.concatenate([self.pom1, [8, 8, 8]])

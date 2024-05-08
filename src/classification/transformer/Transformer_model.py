@@ -1,6 +1,6 @@
 import keras.layers as layers
 import keras
-from utils.config import NUMBER_OF_CLASSES
+from utils.config import Config
 
 
 def transformer_encoder(inputs, head_size, num_heads, ff_dim, dropout=0):
@@ -39,7 +39,7 @@ def create_Transformer_model(
     for dim in mlp_units:
         x = layers.Dense(dim, activation="relu")(x)
         x = layers.Dropout(mlp_dropout)(x)
-    outputs = layers.Dense(NUMBER_OF_CLASSES, activation="softmax")(x)
+    outputs = layers.Dense(Config.NUMBER_OF_CLASSES, activation="softmax")(x)
 
     model = keras.Model(inputs, outputs)
 

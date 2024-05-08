@@ -1,7 +1,7 @@
 from .raw_result_manager import read_raw_result
 import numpy as np
 import pandas
-from utils.config import TYPE_OF_DATA
+from utils.config import Config
 import os
 
 
@@ -70,9 +70,9 @@ def save_results(data_per_class, path, dir):
 
 
 def save_final_results(results):
-    path = "results/" + TYPE_OF_DATA
+    path = "results/" + Config.TYPE_OF_DATA
     for result in results:
-        save_results(results[result], path + "/" + TYPE_OF_DATA + '_' + result, path)
+        save_results(results[result], path + "/" + Config.TYPE_OF_DATA + '_' + result, path)
 
 
 def create_final_results():

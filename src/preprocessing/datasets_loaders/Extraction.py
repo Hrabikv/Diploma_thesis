@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 import numpy as np
 from mne import Epochs
 
-from utils import config
+from utils.config import Config
 
 
 def square(eeg):
@@ -11,10 +11,10 @@ def square(eeg):
 
 
 def transform_data_representation(epochs: Epochs) -> np.ndarray:
-    if config.FEATURE_VECTOR == "time":
+    if Config.FEATURE_VECTOR == "time":
         return epochs.get_data()
 
-    elif config.FEATURE_VECTOR == "freq":
+    elif Config.FEATURE_VECTOR == "freq":
         return epochs.compute_psd(fmin=8, fmax=30).get_data()
 
 
