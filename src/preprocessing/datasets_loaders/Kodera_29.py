@@ -19,8 +19,12 @@ class Kodera(Extraction):
     data_formats = [MochaFormat, SalehFormat]
 
     def __init__(self):
+        if not os.path.exists(self.data_path):
+            raise ValueError("Folder named \"data\" dont not exits!!")
         self.dataset_name = "kodera_29"
         self.base_path = self.data_path + self.dataset_name
+        if not os.path.exists(self.base_path):
+            raise ValueError("There are no folder named \"kodera_29\" in data folder!!")
         self.files_per_subject = None
 
     def load_data(self):

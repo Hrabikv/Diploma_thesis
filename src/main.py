@@ -57,11 +57,12 @@ def create_array_of_classifiers():
 if __name__ == '__main__':
     try:
         readConfig()
+        d, l = ETL.load_data()
     except Exception as error:
         print('Caught this error: ' + repr(error))
+        print('Read confix.txt!')
         sys.exit(-1)
 
-    d, l = ETL.load_data()
     classifiers_array = create_array_of_classifiers()
 
     if Config.TYPE_OF_DATA == "intra-subject":

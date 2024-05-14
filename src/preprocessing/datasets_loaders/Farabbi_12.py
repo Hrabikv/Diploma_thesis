@@ -12,8 +12,12 @@ from mne import Epochs
 class Farabbi(Extraction):
 
     def __init__(self):
+        if not os.path.exists(self.data_path):
+            raise ValueError("Folder named \"data\" dont not exits!!")
         self.dataset_name = "farabbi_12"
         self.base_path = self.data_path + self.dataset_name
+        if not os.path.exists(self.base_path):
+            raise ValueError("There are no folder named \"farabbi_12\" in data folder!!")
         self.files_per_subject = None
         self.events_codes_with_desc = {
             1: [1010, "End Of Session"],

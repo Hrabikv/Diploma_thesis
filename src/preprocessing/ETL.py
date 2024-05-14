@@ -11,9 +11,9 @@ def load_data() -> tuple[np.ndarray, np.ndarray]:
     data = []
     labels = []
 
-    preprocessed_data = load_preprocessed_data()
-    if preprocessed_data[0] is not None and preprocessed_data[1] is not None:
-        return preprocessed_data
+    # preprocessed_data = load_preprocessed_data()
+    # if preprocessed_data[0] is not None and preprocessed_data[1] is not None:
+    #     return preprocessed_data
 
     datasets = [Kodera(), Farabbi()]
     sampling_frequency = sys.float_info.max
